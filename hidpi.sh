@@ -1,7 +1,6 @@
 #!/bin/bash
 
 sipInfo=("$(csrutil status)")
-systemVersion=($(sw_vers -productVersion | cut -d "." -f 2))
 systemLanguage=($(locale | grep LANG | sed s/'LANG='// | tr -d '"' | cut -d "." -f 1))
 
 disableSIP="Need to disable SIP"
@@ -72,7 +71,7 @@ if [[ "${systemLanguage}" == "zh_CN" ]]; then
     langChooseResOpCustom="(6) 手动输入分辨率"
 fi
 
-downloadHost="https://raw.githubusercontent.com/xzhih/one-key-hidpi/master"
+downloadHost="https://raw.githubusercontent.com/Boos4721/one-key-hidpi/master"
 # downloadHost="https://raw.githubusercontent.com/xzhih/one-key-hidpi/dev"
 # downloadHost="http://127.0.0.1:8080"
 
@@ -90,10 +89,6 @@ if [[ "${sipInfo}" == *"Filesystem Protections: disabled"* ]] || [[ "$(awk '{pri
 else
     echo "${disableSIP}";
     exit 0
-fi
-
-if [[ "${systemVersion}" -ge "15" ]]; then
-    sudo mount -uw / && killall Finder
 fi
 
 function get_edid()
@@ -182,11 +177,12 @@ cat << EEF
 EEF
     #
     get_edid
-
     thisDir=$(dirname $0)
-    thatDir="/System/Library/Displays/Contents/Resources/Overrides"
-    Overrides="\/System\/Library\/Displays\/Contents\/Resources\/Overrides"
-    
+
+    sudo mount -uw /
+    thatDir="/Library/Displays/Contents/Resources/Overrides"
+    Overrides="\/Library\/Displays\/Contents\/Resources\/Overrides"
+
     DICON="com\.apple\.cinema-display"
     imacicon=${Overrides}"\/DisplayVendorID\-610\/DisplayProductID\-a032\.tiff"
     mbpicon=${Overrides}"\/DisplayVendorID\-610\/DisplayProductID\-a030\-e1e1df\.tiff"
